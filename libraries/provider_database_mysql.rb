@@ -32,7 +32,7 @@ class Chef
           schema_present = nil
 
           begin
-            test_sql = 'SHOW SCHEMAS;'
+            test_sql = 'SHOW DATABASES;'
             Chef::Log.debug("#{new_resource.name}: Performing query [#{test_sql}]")
             test_sql_results = test_client.query(test_sql)
             test_sql_results.each do |r|
@@ -46,7 +46,7 @@ class Chef
           unless schema_present
             converge_by "Creating schema '#{new_resource.database_name}'" do
               begin
-                repair_sql = "CREATE SCHEMA IF NOT EXISTS `#{new_resource.database_name}`"
+                repair_sql = "CREATE DATABASE IF NOT EXISTS `#{new_resource.database_name}`"
                 repair_sql += " CHARACTER SET = #{new_resource.encoding}" if new_resource.encoding
                 repair_sql += " COLLATE = #{new_resource.collation}" if new_resource.collation
                 Chef::Log.debug("#{new_resource.name}: Performing query [#{repair_sql}]")
